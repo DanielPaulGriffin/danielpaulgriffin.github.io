@@ -146,7 +146,7 @@
             box-shadow: 0 8px 20px rgba(0, 200, 255, 0.6);
         }
         
-        /* Hero Section */
+        /* Hero Section - FIXED */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -155,8 +155,6 @@
             position: relative;
             overflow: hidden;
             padding-top: 80px;
-            gap: 40px;
-            flex-wrap: wrap;
         }
         
         .hero::before {
@@ -170,10 +168,22 @@
             z-index: -1;
         }
         
+        .hero-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 60px;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 40px;
+        }
+        
         .hero-content {
-            max-width: 650px;
+            flex: 1;
+            min-width: 350px;
+            max-width: 600px;
             z-index: 2;
-            flex: 1 1 350px;
         }
         
         .hero h1 {
@@ -215,28 +225,40 @@
             background: rgba(0, 200, 255, 0.1);
         }
         
-        .hero-image {
+        .hero-video {
             position: relative;
             width: 600px;
             max-width: 90vw;
-            aspect-ratio: 16 / 9; /* Makes it a square, adjust as needed */
+            aspect-ratio: 16 / 9;
             z-index: 1;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 10px 32px rgba(0,0,0,0.5);
             border: 2px solid rgba(0, 200, 255, 0.3);
-            margin: 0 auto;
             background: #111;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         
-        .hero-image img {
+        .hero-video iframe {
             width: 100%;
             height: 100%;
-            object-fit: cover;
             display: block;
+            border: none;
+        }
+        
+        .vr-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
         }
         
         /* Features Section */
@@ -359,6 +381,8 @@
         .media-container {
             position: relative;
             border-radius: 10px;
+            width: 560px;
+            max-width: 100%;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(0, 200, 255, 0.3);
@@ -368,6 +392,7 @@
             width: 100%;
             display: block;
         }
+        
         
         .vr-badge {
             position: absolute;
@@ -626,9 +651,9 @@
         </div>
     </header>
     
-    <!-- Hero Section -->
+     <!-- Hero Section - Fixed Layout -->
     <section class="hero">
-        <div class="container">
+        <div class="hero-container">
             <div class="hero-content">
                 <h1>How Fast<span>Can You Go?</span></h1>
                 <p>The ultimate experience of freedom and speed. Thrust your way through asteroid fields, speedways and deserted colonies at speeds never before achieved—until now.</p>
@@ -637,29 +662,13 @@
                     <button class="trailer-button"><i class="fas fa-play-circle"></i> Watch Trailer</button>
                 </div>
             </div>
-        </div>
-        <div class="hero-image">
-            <div id="slideshow-container" style="width:100%; max-width:600px; aspect-ratio:16/9; overflow:hidden;">
-                <img id="slideshow-image" src="images/screenshots/image1.png" alt="Screenshot" style="width:100%; height:100%; object-fit:cover;">
+            
+            <div class="hero-video">
+                <iframe src="https://www.youtube.com/embed/u4goDKC1Qmc?si=sYo8tBH81f_TPwDT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="vr-badge">
+                    <i class="fas fa-vr-cardboard"></i> VR EXCLUSIVE
+                </div>
             </div>
-            <script>
-                // List your screenshot filenames here
-                const images = [
-                    'images/screenshots/image4.png',
-                    'images/screenshots/image6.png',
-                    'images/screenshots/image7.png',
-                    'images/screenshots/image1.png',
-                    'images/screenshots/image2.png',
-                    'images/screenshots/image3.png',
-                    // Add more images as needed
-                ];
-                let current = 0;
-                const imgElement = document.getElementById('slideshow-image');
-                setInterval(() => {
-                    current = (current + 1) % images.length;
-                    imgElement.src = images[current];
-                }, 2000); // Change image every 2 seconds
-            </script>
         </div>
     </section>
     
@@ -738,22 +747,30 @@
                     
                     <p>Your VR controllers become your ship's thrusters. Feel the tension as you narrowly avoid collisions, and the satisfaction when you perfectly execute a maneuver.</p>
                 </div>
-                
-                <div class="gameplay-media">
-                    <div class="media-container" style="display: flex; align-items: center; justify-content: center;">
-                        <iframe
-                            src="https://www.youtube.com/embed/71AM89c8wAE?autoplay=1&mute=1&loop=1&playlist=71AM89c8wAE&vq=hd1080"
-                            title="YouTube video player"
-                            frameborder="0"
-                            allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                            style="width: 512px; height: 512px; border: none; box-shadow: none; display: block;">
-                        </iframe>
-                        <div class="vr-badge" style="position: absolute; top: 20px; right: 20px;">
-                            <i class="fas fa-vr-cardboard"></i> VR EXCLUSIVE
-                        </div>
-                    </div>
-                </div>
+                <div class="hero-image">
+            <div id="slideshow-container" style="width:100%; max-width:600px; aspect-ratio:16/9; overflow:hidden;">
+                <img id="slideshow-image" src="images/screenshots/image1.png" alt="Screenshot" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <script>
+                // List your screenshot filenames here
+                const images = [
+                    'images/screenshots/image4.png',
+                    'images/screenshots/image6.png',
+                    'images/screenshots/image7.png',
+                    'images/screenshots/image1.png',
+                    'images/screenshots/image2.png',
+                    'images/screenshots/image3.png',
+                    // Add more images as needed
+                ];
+                let current = 0;
+                const imgElement = document.getElementById('slideshow-image');
+                setInterval(() => {
+                    current = (current + 1) % images.length;
+                    imgElement.src = images[current];
+                }, 2000); // Change image every 2 seconds
+            </script>
+        </div>
+               
             </div>
         </div>
     </section>
