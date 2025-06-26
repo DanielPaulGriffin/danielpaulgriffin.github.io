@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Paul Griffin — Minimal Sci-Fi Games</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <div id="level-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); z-index:1000; justify-content:center; align-items:center;">
+      <div style="background:#222; color:#fff; padding:2em; border-radius:1em; text-align:center;">
+        <div id="level-modal-message"></div>
+        <button id="level-modal-ok" style="margin-top:1em;">OK</button>
+      </div>
+    </div>
+
+    <div id="side-panel">
+      <div class="particles" id="panel-particles"></div>
+      <div id="side-panel-content">
+        <div class="panel-header">
+          <div class="panel-header-bar"></div>
+          <h1>Daniel Paul Griffin</h1>
+          <div class="holographic-line"></div>
+          <h2>Minimalist Sci-Fi Game Developer</h2>
+        </div>
+        
+        <div class="panel-card" style="position:relative; cursor:pointer;" onclick="window.location='thrustfall/index.html'">
+          <img src="images/CoverArtLandscape.png" alt="Cover Art" class="cover-image">
+          <a href="thrustfall/index.html"
+             class="cta-button meta-quest-btn"
+             style="position:absolute; left:20px; bottom:20px; z-index:2; text-decoration:none;">
+            Get on Meta Quest <i class="fab fa-meta"></i>
+          </a>
+          
+        </div>
+        
+        <div class="panel-card padded">
+          <div class="card-header">
+            
+            <h3>This Website is also a game!</h3>
+          </div>
+          <div class="game-feature">
+            <h4>AstraLander</h4>
+            <p>A physics-driven lander game inspired by AstroLander from TimeSplitters2.</p>
+            <div class="controls-info">
+              <span class="key">W</span>
+              <span class="key">A</span>
+              <span class="key">S</span>
+              <span class="key">D</span>
+              <span>to <span style="color:#00bcff">PLAY</span>. Land gently to survive.</span>
+            </div>
+          </div>
+        </div>
+         <div class="holographic-line"></div>
+        <div class="panel-card padded">
+          <div class="card-header">
+           
+            <h3>My Games on Steam</h3>
+          </div>
+          <div class="game-links">
+            <a href="https://store.steampowered.com/app/727020/Arcade_Moonlander/" target="_blank" class="steam-link">
+              <div class="link-icon">➤</div>
+              <div class="link-text">Arcade Moonlander</div>
+            </a>
+            <a href="https://store.steampowered.com/app/1687560/ASTRONOT/" target="_blank" class="steam-link">
+              <div class="link-icon">➤</div>
+              <div class="link-text">Astro-Not</div>
+            </a>
+          </div>
+        </div>
+        
+        <div class="panel-card padded">
+          <div class="card-header">
+            
+            <h3>Roast My Game Submissions</h3>
+          </div>
+          <p>Check out the games I've submitted on RoastMyGame.com</p>
+          <a href="https://roastmygame.com/" target="_blank" class="action-button">
+            View Submissions
+          </a>
+        </div>
+        
+        <div class="panel-card padded">
+          <div class="card-header">
+            <div class="holographic-line"></div>
+            <h3>About Me</h3>
+          </div>
+          <p>
+            I'm passionate about interactive art, procedural worlds, and creating immersive sci-fi experiences. 
+            My focus is on minimalist design that creates maximum impact through thoughtful mechanics and atmospheric worlds.
+          </p>
+          <p class="tagline">
+            I design and build games that focus on mechanics, mood, and discovery.
+          </p>
+        </div>
+        
+        <div class="panel-card padded">
+          <div class="card-header">
+            <div class="holographic-line"></div>
+            <h3>Connect</h3>
+          </div>
+          <div class="social-links">
+            <a href="https://twitter.com/" target="_blank" class="social-link">
+              <div class="social-icon">𝕏</div>
+              <div class="social-text">Twitter/X</div>
+            </a>
+            <a href="https://github.com/" target="_blank" class="social-link">
+              <div class="social-icon">{ }</div>
+              <div class="social-text">GitHub</div>
+            </a>
+            <a href="mailto:daniel@example.com" class="social-link">
+              <div class="social-icon">✉</div>
+              <div class="social-text">Email</div>
+            </a>
+          </div>
+        </div>
+        
+        <div class="quote">
+          <div class="quote-line"></div>
+          <div class="quote-text">"Keep it simple."</div>
+          <div class="quote-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="return-label">Press SPACE to return to website</div>
+    <script type="module" src="main.js"></script>
+    <script>
+function createPanelParticles() {
+    const container = document.getElementById('panel-particles');
+    if (!container) return;
+    const particleCount = 80;
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        // Random size
+        const size = Math.random() * 2.5 + 1.5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        // Random animation duration
+        particle.style.animationDuration = `${Math.random() * 18 + 8}s`;
+        particle.style.animationDelay = `${Math.random() * 8}s`;
+        // Random color variation
+        const hue = 120 + Math.random() * 40 - 20;
+        const lightness = 60 + Math.random() * 20;
+        particle.style.background = `hsl(${hue}, 90%, ${lightness}%)`;
+        container.appendChild(particle);
+    }
+}
+window.addEventListener('DOMContentLoaded', createPanelParticles);
+</script>
+
+
+  </body>
+</html>

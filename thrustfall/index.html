@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thrustfall | Physics-Based VR Space Adventure</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00c8ff;
+            --secondary: #9d4edd;
+            --dark: #0c0e1d;
+            --darker: #070914;
+            --light: #e0f7ff;
+            --accent: #ff3e7f;
+            --glow: 0 0 15px rgba(0, 200, 255, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(157, 78, 221, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 200, 255, 0.1) 0%, transparent 20%);
+            background-attachment: fixed;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            background: rgba(7, 9, 20, 0.85);
+            border-bottom: 1px solid rgba(0, 200, 255, 0.2);
+        }
+        
+        header.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: var(--glow);
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: var(--darker);
+            font-weight: 700;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 200, 255, 0.6);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 30%, var(--dark) 80%);
+            z-index: -1;
+        }
+        
+        .hero-content {
+            max-width: 650px;
+            z-index: 2;
+            flex: 1 1 350px;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 0 20px rgba(0, 200, 255, 0.8);
+        }
+        
+        .hero h1 span {
+            color: var(--accent);
+            display: block;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .trailer-button {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--primary);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .trailer-button:hover {
+            background: rgba(0, 200, 255, 0.1);
+        }
+        
+        .hero-image {
+            position: relative;
+            width: 600px;
+            max-width: 90vw;
+            aspect-ratio: 16 / 9; /* Makes it a square, adjust as needed */
+            z-index: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 32px rgba(0,0,0,0.5);
+            border: 2px solid rgba(0, 200, 255, 0.3);
+            margin: 0 auto;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+            font-size: 2.5rem;
+        }
+        
+        .section-title span {
+            color: var(--primary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background: rgba(20, 23, 44, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            z-index: -1;
+            border-radius: 17px;
+        }
+        
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(12, 14, 29, 0.9);
+            border-radius: 15px;
+            z-index: -1;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        /* Gameplay Section */
+        .gameplay {
+            padding: 100px 0;
+            background: rgba(9, 12, 26, 0.5);
+        }
+        
+        .gameplay-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .gameplay-text {
+            flex: 1;
+        }
+        
+        .gameplay-text h2 {
+            margin-bottom: 25px;
+        }
+        
+        .gameplay-text ul {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .gameplay-text li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .gameplay-text li::before {
+            content: '➤';
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+        }
+        
+        .gameplay-media {
+            flex: 1;
+            position: relative;
+        }
+        
+        .media-container {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+        }
+        
+        .media-container img {
+            width: 100%;
+            display: block;
+        }
+        
+        .vr-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Requirements */
+        .requirements {
+            padding: 100px 0;
+        }
+        
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .spec-card {
+            background: rgba(20, 23, 44, 0.5);
+            border-radius: 10px;
+            padding: 25px;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        
+        .spec-card h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .spec-item {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .spec-name {
+            color: #aaa;
+        }
+        
+        /* Call to Action */
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(9, 12, 36, 0.8), rgba(15, 10, 40, 0.8));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 Q50,20 100,0 L100,100 Q50,80 0,100 Z" fill="rgba(0, 200, 255, 0.05)"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .cta-section h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+        }
+        
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 30px 0;
+            text-shadow: var(--glow);
+        }
+        
+        .platforms {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .platform {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 60px 0 30px;
+            background: var(--dark);
+            text-align: center;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        /* Particles Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0.5;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            100% { transform: translateY(-100vh) translateX(100px); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero {
+                text-align: center;
+                padding-top: 120px;
+            }
+            
+            .hero-content {
+                margin: 0 auto;
+            }
+            
+            .hero-image {
+                position: relative;
+                width: 100%;
+                right: auto;
+                top: auto;
+                transform: none;
+                margin-top: 50px;
+                max-width: 600px;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+            
+            .gameplay-content {
+                flex-direction: column;
+            }
+            
+            .gameplay-text, .gameplay-media {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <img src="images/Title.png" alt="THRUSTFALL" style="height:48px; display:block;">
+                </a>
+                <ul class="nav-links">
+                     
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#gameplay">Gameplay</a></li>
+                    <li><a href="#requirements">Requirements</a></li>
+                    <li><a href="../">Daniel Paul Griffin</a></li>
+                    <li><a href="#purchase" class="cta-button">Buy Now</a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>How Fast<span>Can You Go?</span></h1>
+                <p>The ultimate experience of freedom and speed. Thrust your way through asteroid fields, speedways and deserted colonies at speeds never before achieved—until now.</p>
+                <div class="hero-buttons">
+                    <a href="#purchase" class="cta-button">Get on Meta Quest <i class="fab fa-meta"></i></a>
+                    <button class="trailer-button"><i class="fas fa-play-circle"></i> Watch Trailer</button>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div id="slideshow-container" style="width:100%; max-width:600px; aspect-ratio:16/9; overflow:hidden;">
+                <img id="slideshow-image" src="images/screenshots/image1.png" alt="Screenshot" style="width:100%; height:100%; object-fit:cover;">
+            </div>
+            <script>
+                // List your screenshot filenames here
+                const images = [
+                    'images/screenshots/image4.png',
+                    'images/screenshots/image6.png',
+                    'images/screenshots/image7.png',
+                    'images/screenshots/image1.png',
+                    'images/screenshots/image2.png',
+                    'images/screenshots/image3.png',
+                    // Add more images as needed
+                ];
+                let current = 0;
+                const imgElement = document.getElementById('slideshow-image');
+                setInterval(() => {
+                    current = (current + 1) % images.length;
+                    imgElement.src = images[current];
+                }, 2000); // Change image every 2 seconds
+            </script>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Game <span>Features</span></h2>
+            <div class="features-grid">
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3>Realistic Physics</h3>
+                    <p>Realistic momentum, inertia, and gravitational effects. Acceleration is a commitment, you will need fuel to slow down!</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <h3>Level Goals</h3>
+                    <p>Each of the 30+ levels has three goal times to achieve, each awarding a point of RANK. Higher ranks unlock new levels.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Online Leaderboards</h3>
+                    <p>Compete against other users for the fastest times on each level. How fast can you go?</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <h3>Detailed Environments</h3>
+                    <p>Directional Shadows and lighting for increased immersion, but watchout on the darkside of the moon!</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>Hidden Collectables</h3>
+                    <p>Each of the 30+ levels has a hidden collectable to uncover. </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-vr-cardboard"></i>
+                    </div>
+                    <h3>Immersive VR</h3>
+                    <p>Built from the ground up for VR, with intuitive motion controls and full room-scale support for unparalleled immersion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gameplay Section -->
+    <section class="gameplay" id="gameplay">
+        <div class="container">
+            <div class="gameplay-content">
+                <div class="gameplay-text">
+                    <h2>Physics-Driven <span>Gameplay</span></h2>
+                    <p>Thrustfall isn't for the faint of heart. It's a physics playground that gives complete control to the player. </p>
+
+                    <ul>
+                        <li>Realistic Newtonian flight physics with momentum conservation</li>
+                        <li>Thrust in any direction at any time</li>
+                        <li>Feather the throttle and boost for precise and granular control</li>
+                        <li>Manage your fuel consumption and grab Fuel cans to refill</li>
+                        <li>Gravity wells and slingshot maneuvers around celestial bodies</li>
+                    </ul>
+                    
+                    <p>Your VR controllers become your ship's thrusters. Feel the tension as you narrowly avoid collisions, and the satisfaction when you perfectly execute a maneuver.</p>
+                </div>
+                
+                <div class="gameplay-media">
+                    <div class="media-container" style="display: flex; align-items: center; justify-content: center;">
+                        <iframe
+                            src="https://www.youtube.com/embed/71AM89c8wAE?autoplay=1&mute=1&loop=1&playlist=71AM89c8wAE&vq=hd1080"
+                            title="YouTube video player"
+                            frameborder="0"
+                            allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                            style="width: 512px; height: 512px; border: none; box-shadow: none; display: block;">
+                        </iframe>
+                        <div class="vr-badge" style="position: absolute; top: 20px; right: 20px;">
+                            <i class="fas fa-vr-cardboard"></i> VR EXCLUSIVE
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Requirements -->
+    <section class="requirements" id="requirements">
+        <div class="container">
+            <h2 class="section-title">System <span>Requirements</span></h2>
+            
+            <div class="specs">
+                <div class="spec-card">
+                    <h3>MINIMUM</h3>
+                    <div class="spec-item">
+                        <span class="spec-name">VR Headset</span>
+                        <span class="spec-value">Quest 3, Quest 3S</span>
+                    </div>
+                   
+                </div>
+                
+               
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action -->
+    <section class="cta-section" id="purchase">
+        <div class="container">
+            <h2>Ready for <span>Launch?</span></h2>
+            <p>Join the pilots experiencing the next generation of space flight VR gameplay. Wishlist now on the Meta Quest Store.</p>
+            
+            <div class="price">$24.99</div>
+            
+            <div class="platforms">
+                <div class="platform">
+                    <i class="fab fa-meta"></i> Meta Quest Store
+                </div>
+            </div>
+            
+            <a href="#" class="cta-button">Purchase Now</a>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <a href="../" class="footer-logo">ASTRA<span>LANDER</span></a>
+            <p>Want to play a thrust game right now? Check out AstraLander on my homepage.</p>
+            <p>Or checkout the links below to get in touch :)</p>
+            
+            <div class="social-links">
+                <a href="#"><i class="fas fa-cloud"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-reddit"></i></a>
+            </div>
+            <p class="copyright">© 2025 Daniel Paul Griffin. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Particles background
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 100;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation duration
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                // Random color variation
+                const hue = 180 + Math.random() * 20 - 10;
+                particle.style.background = `hsl(${hue}, 100%, 70%)`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            // Initialize header state
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

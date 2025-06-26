@@ -1,0 +1,575 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    background: #000;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#gameCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#ui-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 2;
+    color: var(--line-color);
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px var(--line-color);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    border: 1px solid var(--line-color);
+}
+
+#controls {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    display: none;
+    justify-content: center;
+    gap: 20px;
+    z-index: 2;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: white;
+    user-select: none;
+    cursor: pointer;
+    border: 2px solid var(--line-color);
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+.control-btn:active {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+    #controls {
+        display: flex;
+    }
+}
+
+#side-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0e1a 0%, #070914 100%);
+    color: #fff;
+    z-index: 2000;
+    box-shadow: 0 0 10px var(--line-color);
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(.77,0,.18,1);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    border-right: 1px solid var(--line-color);
+}
+
+#side-panel.open {
+    transform: translateX(0);
+}
+
+#side-panel-content {
+    position: relative;
+    z-index: 1;
+    padding: 30px;
+    --side-panel-content-padding: 30px; /* For use in the bar offset above */
+}
+
+.panel-header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    padding: 0px 0 0 0; /* Remove top padding so bar reaches the top */
+    z-index: 1;
+}
+
+.panel-header-bar {
+    position: absolute;
+    top:-50px;
+    left: 0;
+    right: 0; /* Ensure it stretches to the right edge */
+    width: 100vw; /* Make sure it covers the full width of the panel, even if panel has padding */
+    min-width: 100%;
+    height: 104px; /* Adjust to reach the holographic line */
+    background: #050505;
+    z-index: 1; /* Above particles, below text */
+    pointer-events: none;
+    margin-left: calc(-1 * var(--side-panel-content-padding, 30px)); /* Offset panel content padding if needed */
+}
+
+.panel-header h1,
+.panel-header h2,
+.holographic-line {
+    position: relative;
+    z-index: 2;
+}
+
+.panel-header h1 {
+    color: var(--line-color);
+    font-family: 'Racer', 'Orbitron', sans-serif;
+    font-size: 1.7rem;      /* Smaller, modern */
+    margin-bottom: 0.15em;
+    text-shadow: 0 0 12px var(--line-color);
+    letter-spacing: 2px;
+    text-align: left;
+}
+
+.panel-header h2 {
+    font-weight: 400;
+    color: #a0f0e0;
+    font-size: .88rem;     /* Smaller, modern */
+    margin-bottom: 0.08em;
+    letter-spacing: 1px;
+    text-align: left;
+}
+
+.holographic-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--line-color), transparent);
+    margin: 15px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.holographic-line::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    animation: hologramScan 3s linear infinite;
+}
+
+.header-glow {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 20px;
+    background: var(--line-color);
+    filter: blur(20px);
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.panel-card {
+    background: rgba(10, 15, 30, 0.9);
+    border: 1px solid rgba(22, 241, 16, 0.1);
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 160px;
+    padding: 0; /* No padding by default */
+}
+
+.panel-card.padded {
+    padding: 24px;
+    height: auto;
+}
+
+.panel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0px 10px var(--line-color);
+}
+
+.panel-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--line-color), transparent);
+    opacity: 0.6;
+}
+
+.card-header {
+    margin-bottom: 15px;
+}
+
+.card-header h3 {
+    color: var(--line-color);
+    font-size: 1.08rem;     /* Smaller, modern */
+    margin: 8px 0;
+    font-weight: 500;
+}
+
+.cover-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    margin: 0;
+    box-shadow: none;
+}
+
+.tagline {
+    font-size: .88rem;     /* Smaller, modern */
+    color: #e4e4e4;
+    margin-bottom: 1em;
+    text-align: center;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+.game-feature h4 {
+    font-size: .88rem;
+    color: #fff;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.game-feature p {
+    color: #bbb;
+    font-size: .8rem;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.controls-info {
+    font-size: .88rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+.key {
+    display: inline-block;
+    padding: 5px 10px;
+    background: '#050505';
+    border: 1px solid var(--line-color);
+    border-radius: 4px;
+    color: var(--line-color);
+    font-family: 'Courier New', monospace;
+    min-width: 30px;
+    text-align: center;
+    box-shadow: 0 0 8px var(--line-color);
+}
+
+.game-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.steam-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    padding: 12px 15px;
+    background: '#050505';
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid '#050505';
+}
+
+.steam-link:hover {
+    background: rgba(42, 90, 186, 0.1);
+    transform: translateX(5px);
+    border-color: var(--line-color);
+}
+
+.link-icon {
+    color: var(--line-color);
+    font-size: 1.05rem;
+    margin-right: 12px;
+    width: 26px;
+    text-align: center;
+}
+
+.link-text {
+    font-size: 0.98rem;
+}
+
+.action-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 22px;
+    background: transparent;
+    color: var(--line-color);
+    border: 1px solid var(--line-color);
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 15px var(--line-color);
+}
+
+.action-button:hover {
+    background: rgba(22, 241, 16, 0.1);
+    box-shadow: 0 0 25px var(--line-color);
+    transform: translateY(-3px);
+}
+
+.social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 15px;
+    background: rgba(30, 35, 50, 0.7);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    flex: 1;
+    min-width: 120px;
+    border: 1px solid rgba(22, 241, 16, 0.1);
+}
+
+.social-link:hover {
+    background: rgba(22, 241, 16, 0.1);
+    transform: translateY(-3px);
+    border-color: var(--line-color);
+}
+
+.social-icon {
+    color: var(--line-color);
+    font-size: 1.3rem;
+    margin-right: 10px;
+    width: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.social-text {
+    font-size: 1rem;
+}
+
+.quote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    padding: 15px 0;
+}
+
+.quote-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line-color), transparent);
+    opacity: 0.5;
+}
+
+.quote-text {
+    padding: 0 15px;
+    color: #aaa;
+    font-style: italic;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* Moving star/particle effect for side panel */
+#panel-particles {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+#panel-particles .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--line-color, var(--line-color));
+    opacity: 0.5;
+    animation: panel-float 15s infinite linear;
+}
+
+@keyframes panel-float {
+    0% { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(-100vh) translateX(100px); }
+}
+
+@keyframes hologramScan {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+#return-label {
+    position: fixed;
+    bottom: 12px;
+    left: 0;
+    width: 100vw;
+    text-align: center;
+    color: var(--line-color);
+    font-size: .65em;
+    font-family: 'Orbitron', sans-serif;
+    z-index: 1500;
+    pointer-events: none;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px var(--line-color), 0 0 8px var(--line-color);
+}
+
+/* Only hide the mobile panel buttons on PC */
+@media (pointer: fine), (hover: hover) {
+    #open-panel-btn, #close-panel-btn {
+        display: none !important;
+    }
+}
+
+:root {
+    --line-color: #00bcff; /* default, will be overwritten by JS */
+}
+
+#side-panel-content strong,
+#side-panel-content h1 {
+    color: var(--line-color);
+}
+
+#side-panel-content h1 {
+    color: var(--line-color);
+    font-family: 'Racer', 'Orbitron', sans-serif;
+}
+
+a {
+    color: var(--line-color);
+}
+
+@font-face {
+    font-family: 'Racer';
+    src: url('racer.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#return-label,
+#level-modal,
+#level-modal * {
+    font-family: 'Racer', 'Orbitron', sans-serif !important;
+    letter-spacing: 1px;
+}
+
+#level-modal > div {
+    background: var(--poly-fill-color) !important;
+    border: 2px solid var(--line-color);
+    border-radius: 1em;
+    color: #fff;
+    padding: 2em;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #side-panel {
+        width: 100vw;
+    }
+    
+    .panel-header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .panel-header h2 {
+        font-size: 0.92rem;
+    }
+    
+    .panel-card {
+        padding: 15px;
+    }
+    
+    .social-links {
+        flex-direction: column;
+    }
+    
+    .card-header h3 {
+        font-size: 0.95rem;
+    }
+    
+    .tagline,
+    .panel-card,
+    .panel-card.padded,
+    .panel-card p,
+    .game-feature p,
+    .link-text,
+    .social-text,
+    .quote-text {
+        font-size: 0.91rem;
+    }
+    .meta-quest-btn,
+    .action-button {
+        font-size: 0.88rem;
+        padding: 9px 16px;
+    }
+}
+
+.meta-quest-btn {
+    background: linear-gradient(45deg, #00c8ff, #9d4edd);
+    color: #070914;
+    font-weight: 700;
+    padding: 12px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 5px 15px var(--line-color);
+    font-size: 1rem;
+    display: inline-block;
+}
+
+.meta-quest-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 200, 255, 0.6);
+    background: linear-gradient(45deg, #9d4edd, #00c8ff);
+}
