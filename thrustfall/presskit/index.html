@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thrustfall Presskit</title>
+    <title>Presskit</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -643,7 +643,7 @@
                     <li><a href="#factsheet">Factsheet</a></li>
                     <li><a href="#description">Description</a></li>
                     <li><a href="#videos">Videos</a></li>
-                    <li><a href="#images">Images</a></li>
+                    <li><a href="#images">Screenshots</a></li>
                     <li><a href="#contact">Contact</a></li>
                     <li><a href="../">Thrust Fall</a></li>
                     <li><a href="../../">Daniel Paul Griffin</a></li>
@@ -751,70 +751,60 @@
     <!-- Images Section -->
     <section class="gameplay" id="images">
         <div class="container">
-            <div class="gameplay-content">
+             <h2 class="section-title">Screenshots</h2>
+            <div class="gameplay-content" style="flex-direction: column;">
+                
+                <div class="images-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; width: 100%; margin-top: 24px;">
+                    <img src="../images/screenshots/image1.png" alt="Screenshot 1" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/screenshots/image2.png" alt="Screenshot 2" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/screenshots/image3.png" alt="Screenshot 3" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/screenshots/image4.png" alt="Screenshot 4" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/screenshots/image6.png" alt="Screenshot 5" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/screenshots/image7.png" alt="Screenshot 6" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/screenshots/image8.png" alt="Screenshot 7" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/screenshots/image5.png" alt="Screenshot 8" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Artwork Section -->
+    <section class="gameplay" id="artwork">
+        <div class="container">
+            <h2 class="section-title">Artwork</h2>
+            <div class="gameplay-content" style="flex-direction: column;">
+                <div class="images-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; width: 100%; margin-top: 24px;">
+                    <img src="../images/artwork/CoverArtLandscape.png" alt="CoverArtLandscape" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/artwork/CoverArtLandscapeMini.png" alt="CoverArtLandscapeMini" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/artwork/CoverArtPortrait.png" alt="CoverArtPortrait" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/artwork/CoverArtSquare.png" alt="CoverArtSquare" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/artwork/HeroCover.png" alt="HeroCover" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                    <img src="../images/artwork/Icon.png" alt="Icon" style="width:100%; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section class="gameplay" id="artwork">
+        <div class="container">
+            <div class="gameplay-content" style="flex-direction: column;">
                 <div class="gameplay-text">
-                    <h2>Images</h2>
+                    <h2>Contact Us</h2>
+                </div>
+                  <div class="hero-content"><!-- Factsheet -->
+                <ul style="list-style:none; padding:0; margin:0 0 0 0;">
                     
-                </div>
-                <div class="hero-image">
-                    <div id="slideshow-container" style="width:100%; max-width:600px; aspect-ratio:16/9; overflow:hidden;">
-                        <img id="slideshow-image" src="../images/screenshots/image1.png" alt="Screenshot" style="width:100%; height:100%; object-fit:cover;">
-                    </div>
-                    <script>
-                        // List your screenshot filenames here, referencing parent directory
-                        const images = [
-                            '../images/screenshots/image4.png',
-                            '../images/screenshots/image6.png',
-                            '../images/screenshots/image7.png',
-                            '../images/screenshots/image8.png',
-                            '../images/screenshots/image1.png',
-                            '../images/screenshots/image2.png',
-                            '../images/screenshots/image3.png',
-                        ];
-                        let current = 0;
-                        const imgElement = document.getElementById('slideshow-image');
-                        setInterval(() => {
-                            current = (current + 1) % images.length;
-                            imgElement.src = images[current];
-                        }, 2000); // Change image every 2 seconds
-                    </script>
-                </div>
+                    <li style="margin-top:1em;"><strong>Email:</strong><br>
+                        <a href="http://danielpaulgriffin.github.io/thrustfall" target="_blank" style="color:var(--primary);">http://www.danielpaulgriffin.github.io/thrustfall</a>
+                    </li>
+                    <li style="margin-top:1em;"><strong>Social:</strong><br>
+                        <a href="https://x.com/DPG" target="_blank" style="color:var(--primary);">https://x.com/DPG</a><br>
+                        <a href="https://www.facebook.com/Thrustfall/" target="_blank" style="color:var(--primary);">https://www.facebook.com/Thrustfall/</a>
+                    </li>
+                </ul>
             </div>
-        </div>
-    </section>
-    
-    <!-- Requirements -->
-    <section class="requirements" id="requirements">
-        <div class="container">
-            <h2 class="section-title">System <span>Requirements</span></h2>
-            
-            <div class="specs">
-                <div class="spec-card">
-                    <h3>MINIMUM</h3>
-                    <div class="spec-item">
-                        <span class="spec-name">VR Headset</span>
-                        <span class="spec-value">Quest 3, Quest 3S</span>
-                    </div>
-                </div>
             </div>
-        </div>
-    </section>
-    
-    <!-- Call to Action -->
-    <section class="cta-section" id="purchase">
-        <div class="container">
-            <h2>Ready for <span>Launch?</span></h2>
-            <p>Join the pilots experiencing the next generation of space flight VR gameplay. Wishlist now on the Meta Quest Store.</p>
-            
-            <div class="price">$24.99</div>
-            
-            <div class="platforms">
-                <div class="platform">
-                    <i class="fab fa-meta"></i> Meta Quest Store
-                </div>
-            </div>
-            
-            <a href="#" class="cta-button">Purchase Now</a>
         </div>
     </section>
     
