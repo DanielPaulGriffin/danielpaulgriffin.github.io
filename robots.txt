@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /404.html
+Crawl-delay: 10
+Sitemap: https://danielpaulgriffin.github.io/sitemap.xml
