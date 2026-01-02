@@ -1,5 +1,5 @@
 import { camera, transform,setCameraScale } from './camera.js';
-import { lineColor } from './colors.js'; // Add this import
+import { lineColor } from './colors.js';
 
 export const rocket = {
     x: 2000,
@@ -27,12 +27,10 @@ export function initRocket() {
 }
 
 export function updateRocket(keys, deltaTime, crashedCallback) {
-    // Rotation
     const rotationSpeed = 0.075 * (deltaTime / 16);
     if (keys['ArrowLeft'] || keys['a']) rocket.rotation -= rotationSpeed;
     if (keys['ArrowRight'] || keys['d']) rocket.rotation += rotationSpeed;
     
-    // Movement (direction-sensitive)
     if (keys['ArrowUp'] || keys['w']) {
         const thrustForce = rocket.speed * (deltaTime / 16);
         rocket.mx += Math.sin(rocket.rotation) * thrustForce;
@@ -42,23 +40,18 @@ export function updateRocket(keys, deltaTime, crashedCallback) {
         rocket.thrust = false;
     }
     
-    // Gravity
     rocket.my += 0.01 * (deltaTime / 16);
     
-    // Move Rocket
     rocket.x += rocket.mx;
     rocket.y += rocket.my;
 
-    // Calculate rocket speed (magnitude)
     const velocity = Math.sqrt(rocket.mx * rocket.mx + rocket.my * rocket.my);
-    // Set scale: zoom out as speed increases, clamp between 0.5 and 1.2
     let zoomInLimit = 1.25;
     let zoomOutLimit = 0.4;
     let rateOfChange = .2;
     const scale = Math.max(zoomOutLimit, Math.min(zoomInLimit, zoomInLimit - velocity * rateOfChange));
     setCameraScale(scale);
     
-    // World bounds (4000x4000 world)
     const worldSize = 4000;
     if (
         rocket.x < -rocket.width ||
@@ -76,7 +69,7 @@ export function drawRocket(ctx) {
 
     ctx.save();
     ctx.translate(screenPos.x, screenPos.y);
-    ctx.scale(camera.scale, camera.scale); // apply zoom only to rocket
+    ctx.scale(camera.scale, camera.scale); 
     ctx.rotate(rocket.rotation);
 
     if (rocket.colorFlash > 0) {
@@ -93,7 +86,7 @@ export function drawRocket(ctx) {
     ctx.closePath();
 
     ctx.strokeStyle = lineColor;
-    ctx.lineWidth = 3 / camera.scale; // keep stroke thickness constant
+    ctx.lineWidth = 3 / camera.scale; 
     ctx.stroke();
 
     ctx.fillStyle = `rgba(10, 10, 10, 1)`;

@@ -12,7 +12,6 @@ function isTouchDevice() {
 }
 
 export function initControls(options = {}) {
-    // Keyboard input handling
     window.addEventListener('keydown', e => {
         keys[e.key] = true;
     });
@@ -21,13 +20,11 @@ export function initControls(options = {}) {
         keys[e.key] = false;
     });
 
-    // Save references for panel/game state
     sidePanel = options.sidePanel;
     openPanel = options.openPanel;
     closePanel = options.closePanel;
     gameRunningGetter = options.gameRunningGetter;
 
-    // Create touch controls and panel buttons for mobile
     if (isTouchDevice()) {
         createTouchControls();
         createMobilePanelButtons();
@@ -36,7 +33,7 @@ export function initControls(options = {}) {
 }
 
 function createTouchControls() {
-    if (document.getElementById('controls')) return; // Prevent duplicates
+    if (document.getElementById('controls')) return; // prevent duplicates
 
     const controls = document.createElement('div');
     controls.id = 'controls';
@@ -49,7 +46,6 @@ function createTouchControls() {
 
     document.body.appendChild(controls);
 
-    // Add touch event listeners for WASD keys
     document.getElementById('left').addEventListener('touchstart', () => keys['a'] = true);
     document.getElementById('left').addEventListener('touchend', () => keys['a'] = false);
 
@@ -71,7 +67,6 @@ function createMobilePanelButtons() {
     closePanelBtn.id = 'close-panel-btn';
     closePanelBtn.textContent = '▶ Play';
 
-    // Style and position buttons
     openPanelBtn.style.position = 'fixed';
     openPanelBtn.style.top = '24px';
     openPanelBtn.style.left = '24px';

@@ -1,6 +1,5 @@
 import { lineColor,polyFillColor,bgColor } from './colors.js';
 import { transform } from './camera.js';
-// Define the lineColor variable at the top of the file
 //export const lineColor = '#484848';
 //'#484848' - grey
 //'#16f110' - green
@@ -50,7 +49,6 @@ export class Polygon {
 }
 
 export function createPolygons() {
-    // Each level is an array of Polygon objects
     const levels = [];
 
     // Level 1
@@ -86,7 +84,7 @@ export function createPolygons() {
         ], '#e4e4e4', {x: 2150, y: 3000})
     ]);
 
-    // Level 2 (example, add your own polygons)
+    // Level 2 
     levels.push([
         new Polygon([
     {x: -3697, y: 585},
