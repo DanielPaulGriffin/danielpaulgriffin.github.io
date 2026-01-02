@@ -1,10 +1,8 @@
-// Initialize canvas
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
 const startButton = document.getElementById('start-btn');
 
-// Set canvas dimensions to window size
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -13,7 +11,6 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-// Camera settings
 const camera = {
     x: 0,
     y: 0,
@@ -21,23 +18,21 @@ const camera = {
     height: canvas.height,
     target: null,
     
-    // Initialize camera to follow rocket
     init: function(target) {
         this.target = target;
         this.x = target.x - this.width/2;
         this.y = target.y - this.height/2;
     },
     
-    // Update camera position to follow target
     update: function() {
         if (this.target) {
-            // Smooth camera follow
+            // smooth camera follow
             this.x += (this.target.x - this.width/2 - this.x) * 0.05;
             this.y += (this.target.y - this.height/2 - this.y) * 0.05;
         }
     },
     
-    // Convert world coordinates to screen coordinates
+    //world coordinates to screen coordinates
     transform: function(x, y) {
         return {
             x: x - this.x,
@@ -46,9 +41,8 @@ const camera = {
     }
 };
 
-// Rocket object
 const rocket = {
-    x: 2000,  // Start in world space
+    x: 2000,  
     y: 900,
     mx: 0,
     my: 0,
@@ -61,10 +55,8 @@ const rocket = {
     colorFlash: 0
 };
 
-// Initialize camera to follow rocket
 camera.init(rocket);
 
-// POLYGON CLASS
 class Polygon {
     constructor(points, color = '#16f110',offset={x: 2000, y: 2000}) {
         this.points = points;
@@ -88,12 +80,10 @@ class Polygon {
         ctx.lineWidth = this.lineWidth;
         ctx.stroke();
         
-        // Fill polygon with semi-transparent color
         ctx.fillStyle = `rgba(5, 5, 5, 1)`;
         ctx.fill();
     }
     
-    // Point-in-polygon collision detection
     containsPoint(x, y) {
         let inside = false;
         for (let i = 0, j = this.points.length - 1; i < this.points.length; j = i++) {
@@ -108,9 +98,9 @@ class Polygon {
     }
 }
 
-// Create polygons in world space
+
 const polygons = [];
-const worldSize = 4000;  // Size of the game world
+const worldSize = 4000;  
 
 polygons.push(new Polygon([
     {x: -3558, y: -419},
@@ -178,7 +168,6 @@ polygons.push(new Polygon([
     {x: -3590, y: 3613}
 ], '#16f110'));
 
-// Create stars in world space
 const stars = [];
 for (let i = 0; i < 300; i++) {
     stars.push({
@@ -192,7 +181,6 @@ for (let i = 0; i < 300; i++) {
 const keys = {};
 const particles = [];
 
-// Create touch controls for mobile
 function createControls() {
     const controls = document.createElement('div');
     controls.id = 'controls';
@@ -206,7 +194,6 @@ function createControls() {
     controls.innerHTML = controlsHTML;
     document.body.appendChild(controls);
     
-    // Add touch event listeners
     document.getElementById('left').addEventListener('touchstart', () => keys['ArrowLeft'] = true);
     document.getElementById('left').addEventListener('touchend', () => keys['ArrowLeft'] = false);
     
@@ -223,7 +210,6 @@ function createControls() {
     document.getElementById('right').addEventListener('touchend', () => keys['ArrowRight'] = false);
 }
 
-// Keyboard input handling
 window.addEventListener('keydown', e => {
     keys[e.key] = true;
     if (e.key === 'ArrowUp'||e.key === 'w') rocket.thrust = true;
@@ -234,7 +220,6 @@ window.addEventListener('keyup', e => {
     if (e.key === 'ArrowUp'||e.key === 'w') rocket.thrust = false;
 });
 
-// Create particles for rocket exhaust
 function createParticles() {
     if (rocket.thrust) {
         for (let i = 0; i < 3; i++) {
@@ -250,7 +235,6 @@ function createParticles() {
     }
 }
 
-// Create collision particles
 function createCollisionParticles(x, y, count) {
     for (let i = 0; i < count; i++) {
         particles.push({
@@ -264,14 +248,12 @@ function createCollisionParticles(x, y, count) {
     }
 }
 
-// Draw rocket with dynamic lighting
 function drawRocket() {
     ctx.save();
     const screenPos = camera.transform(rocket.x, rocket.y);
     ctx.translate(screenPos.x, screenPos.y);
     ctx.rotate(rocket.rotation);
     
-    // Flash red on collision
     if (rocket.colorFlash > 0) {
         ctx.fillStyle = '#16f110';
         rocket.colorFlash--;
@@ -292,7 +274,6 @@ function drawRocket() {
     ctx.restore();
 }
 
-// Draw stars
 function drawStars() {
     stars.forEach(star => {
         const screenPos = camera.transform(star.x, star.y);
@@ -303,7 +284,6 @@ function drawStars() {
     });
 }
 
-// Draw particles
 function drawParticles() {
     particles.forEach((p, i) => {
         const screenPos = camera.transform(p.x, p.y);
@@ -313,105 +293,82 @@ function drawParticles() {
         ctx.arc(screenPos.x, screenPos.y, p.size * alpha, 0, Math.PI * 2);
         ctx.fill();
         
-        // Update particle
         p.x -= Math.sin(p.angle) * p.speed;
         p.y += Math.cos(p.angle) * p.speed;
         p.life--;
         
-        // Remove dead particles
         if (p.life <= 0) {
             particles.splice(i, 1);
         }
     });
 }
 
-// COLLISION DETECTION AND RESPONSE - FIXED VERTEX CALCULATIONS
 function checkCollisions() {
-    // Calculate rocket vertices correctly
-    const vertices = [
-        // Nose (top vertex)
+    const vertices = [    
         {
             x: rocket.x + Math.sin(rocket.rotation) * (rocket.height/2),
             y: rocket.y - Math.cos(rocket.rotation) * (rocket.height/2)
         },
-        // Left wing
         {
             x: rocket.x - Math.cos(rocket.rotation) * (rocket.width/2) - Math.sin(rocket.rotation) * (rocket.height/2),
             y: rocket.y - Math.sin(rocket.rotation) * (rocket.width/2) + Math.cos(rocket.rotation) * (rocket.height/2)
         },
-        // Right wing
         {
             x: rocket.x + Math.cos(rocket.rotation) * (rocket.width/2) - Math.sin(rocket.rotation) * (rocket.height/2),
             y: rocket.y + Math.sin(rocket.rotation) * (rocket.width/2) + Math.cos(rocket.rotation) * (rocket.height/2)
         }
     ];
     
-    // Check each polygon against all collision points
     for (const poly of polygons) {
         for (const vertex of vertices) {
             if (poly.containsPoint(vertex.x, vertex.y)) {
                 handleCollision(vertex.x, vertex.y);
-                return; // Only handle one collision per frame
+                return; // one collision per frame
             }
         }
     }
 }
 
 function handleCollision(x, y) {
-    // Visual feedback
     rocket.colorFlash = 10;
     
-    // Physics response (bounce)
     rocket.mx *= -0.7;
     rocket.my *= -0.7;
     
-    // Score penalty
     rocket.score = Math.max(0, rocket.score - 5);
     scoreElement.textContent = rocket.score;
     
-    // Add collision particles
     createCollisionParticles(x, y, 15);
 }
 
-// Update game state
 function update() {
-    // Rotation
     if (keys['a']||keys['ArrowLeft']) rocket.rotation -= 0.075;
     if (keys['d']||keys['ArrowRight']) rocket.rotation += 0.075;
     
     
-    // Movement (direction-sensitive)
     if (keys['ArrowUp']||keys['w']) {
         rocket.mx += Math.sin(rocket.rotation) * rocket.speed;
         rocket.my -= Math.cos(rocket.rotation) * rocket.speed;
     }
     
-    // GRAVITY
     rocket.my += 0.005;
     
-    // Move Rocket
     rocket.x += rocket.mx;
     rocket.y += rocket.my;
     
-    // Update camera to follow rocket
     camera.update();
     
-    // World wrapping
     if (rocket.x < -rocket.width) rocket.x = worldSize + rocket.width;
     if (rocket.x > worldSize + rocket.width) rocket.x = -rocket.width;
     if (rocket.y < -rocket.height) rocket.y = worldSize + rocket.height;
     if (rocket.y > worldSize + rocket.height) rocket.y = -rocket.height;
     
-    // Create particles
     createParticles();
     
-    // Check for collisions
     checkCollisions();
 }
 
-// Main render function
 function render() {
-    // Clear screen with space gradient
     const gradient = ctx.createRadialGradient(
         canvas.width/2, canvas.height/2, 0,
         canvas.width/2, canvas.height/2, Math.max(canvas.width, canvas.height)
@@ -422,60 +379,26 @@ function render() {
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Draw stars
     drawStars();
     
-    // Draw polygons
     polygons.forEach(poly => poly.draw());
     
-    // Draw particles
     drawParticles();
     
-    // Draw rocket
     drawRocket();
-    
-    // Draw collision points for debugging - FIXED
-    //const vertices = [
-        // Nose
-    ///    {
-    //        x: rocket.x + Math.sin(rocket.rotation) * (rocket.height/2),
-    //        y: rocket.y - Math.cos(rocket.rotation) * (rocket.height/2)
-    //    },
-        // Left wing
-    //    {
-    //        x: rocket.x - Math.cos(rocket.rotation) * (rocket.width/2) - Math.sin(rocket.rotation) * (rocket.height/2),
-    //        y: rocket.y - Math.sin(rocket.rotation) * (rocket.width/2) + Math.cos(rocket.rotation) * (rocket.height/2)
-    //    },
-        // Right wing
-     //   {
-     //       x: rocket.x + Math.cos(rocket.rotation) * (rocket.width/2) - Math.sin(rocket.rotation) * (rocket.height/2),
-     //       y: rocket.y + Math.sin(rocket.rotation) * (rocket.width/2) + Math.cos(rocket.rotation) * (rocket.height/2)
-     //   }
-    //];
-    
-    //vertices.forEach(vertex => {
-     //   const screenPos = camera.transform(vertex.x, vertex.y);
-     //   ctx.fillStyle = 'lime';
-     //   ctx.beginPath();
-     //   ctx.arc(screenPos.x, screenPos.y, 4, 0, Math.PI * 2);
-     //   ctx.fill();
-    //});
 }
 
-// Game loop
 function gameLoop() {
     update();
     render();
     requestAnimationFrame(gameLoop);
 }
 
-// Initialize the game
 startButton.addEventListener('click', () => {
     rocket.score++;
     scoreElement.textContent = rocket.score;
 });
 
-// Create mobile controls if needed
 if ('ontouchstart' in window) {
     createControls();
 }

@@ -207,7 +207,7 @@
 <body>
     <header>
         <h1>Rocket Game Polygon Editor</h1>
-        <p>Create custom polygons for your rocket game collision system</p>
+        <p>Create custom polygons for Lander game</p>
     </header>
     
     <div class="container">
@@ -245,7 +245,6 @@
                     <li><strong>Right-click</strong> to remove the last placed point</li>
                     <li><strong>Hold CTRL</strong> and click the first point to close the polygon</li>
                     <li>Adjust color and line width using the controls above</li>
-                    <li>Copy the generated code from the output panel to your game.js file</li>
                 </ul>
             </div>
         </div>
@@ -255,7 +254,7 @@
                 <h2>Polygon Code</h2>
                 <button id="copyBtn">Copy Code</button>
             </div>
-            <textarea id="polygonOutput" readonly>// Your polygon code will appear here</textarea>
+            <textarea id="polygonOutput" readonly>// polygon code will appear here</textarea>
             
             <div class="instructions">
                 <h3>How to Use in Game:</h3>
@@ -270,7 +269,6 @@
     </div>
 
     <script>
-        // Canvas setup
         const canvas = document.getElementById('editorCanvas');
         const ctx = canvas.getContext('2d');
         const colorPicker = document.getElementById('colorPicker');
@@ -280,13 +278,11 @@
         const polygonOutput = document.getElementById('polygonOutput');
         const statusBar = document.getElementById('statusBar');
         
-        // Polygon data
         let points = [];
         let isDrawing = false;
         let currentColor = colorPicker.value;
         let currentLineWidth = lineWidth.value;
         
-        // Set canvas size to container
         function resizeCanvas() {
             const container = canvas.parentElement;
             canvas.width = container.clientWidth;
@@ -294,26 +290,21 @@
             redrawCanvas();
         }
         
-        // Draw everything on canvas
         function redrawCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Draw grid
             drawGrid();
             
-            // Draw existing points and lines
             if (points.length > 0) {
                 drawPolygon();
             }
         }
         
-        // Draw a grid for reference
         function drawGrid() {
             const gridSize = 20;
             ctx.strokeStyle = 'rgba(0, 100, 200, 0.2)';
             ctx.lineWidth = 1;
             
-            // Vertical lines
             for (let x = 0; x <= canvas.width; x += gridSize) {
                 ctx.beginPath();
                 ctx.moveTo(x, 0);
@@ -321,7 +312,6 @@
                 ctx.stroke();
             }
             
-            // Horizontal lines
             for (let y = 0; y <= canvas.height; y += gridSize) {
                 ctx.beginPath();
                 ctx.moveTo(0, y);
@@ -330,9 +320,7 @@
             }
         }
         
-        // Draw the polygon
         function drawPolygon() {
-            // Draw lines between points
             ctx.beginPath();
             ctx.strokeStyle = currentColor;
             ctx.lineWidth = currentLineWidth;
@@ -342,21 +330,18 @@
                 ctx.lineTo(points[i].x, points[i].y);
             }
             
-            // Close polygon if we have at least 3 points
             if (points.length >= 3) {
                 ctx.closePath();
             }
             
             ctx.stroke();
             
-            // Draw points
             points.forEach(point => {
                 ctx.beginPath();
                 ctx.fillStyle = '#ff0000';
                 ctx.arc(point.x, point.y, 5, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Highlight the first point
                 if (point === points[0]) {
                     ctx.beginPath();
                     ctx.fillStyle = '#00ff00';
@@ -366,7 +351,6 @@
             });
         }
         
-        // Generate polygon code
         function generatePolygonCode() {
             if (points.length < 3) {
                 return "// Add at least 3 points to create a polygon";
@@ -378,13 +362,12 @@
                 code += `    {x: ${Math.round(point.x)}, y: ${Math.round(point.y)}},\n`;
             });
             
-            code = code.slice(0, -2); // Remove last comma and newline
+            code = code.slice(0, -2); 
             code += "\n]";
             
             return code;
         }
         
-        // Update the status bar
         function updateStatus() {
             if (points.length === 0) {
                 statusBar.textContent = "Click to place the first point of your polygon";
@@ -397,35 +380,30 @@
             }
         }
         
-        // Handle mouse clicks
         function handleMouseClick(e) {
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
-            // Check if we're closing the polygon (CTRL + click first point)
             if (e.ctrlKey && points.length >= 2) {
                 const firstPoint = points[0];
                 const distance = Math.sqrt(Math.pow(x - firstPoint.x, 2) + Math.pow(y - firstPoint.y, 2));
                 
                 if (distance < 15) {
-                    // Close the polygon
                     polygonOutput.value = generatePolygonCode();
                     statusBar.textContent = "Polygon completed! Code generated. Copy and paste into your game.js file.";
                     return;
                 }
             }
             
-            // Add a new point
             points.push({x, y});
             redrawCanvas();
             polygonOutput.value = generatePolygonCode();
             updateStatus();
         }
         
-        // Handle right-click (remove last point)
         function handleContextMenu(e) {
-            e.preventDefault(); // Prevent the context menu
+            e.preventDefault(); 
             if (points.length > 0) {
                 points.pop();
                 redrawCanvas();
@@ -434,7 +412,6 @@
             }
         }
         
-        // Event listeners
         canvas.addEventListener('click', handleMouseClick);
         canvas.addEventListener('contextmenu', handleContextMenu);
         
@@ -459,7 +436,6 @@
             polygonOutput.select();
             document.execCommand('copy');
             
-            // Show confirmation
             const originalText = copyBtn.textContent;
             copyBtn.textContent = "Copied!";
             setTimeout(() => {
@@ -467,7 +443,6 @@
             }, 2000);
         });
         
-        // Initialize
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
         updateStatus();
