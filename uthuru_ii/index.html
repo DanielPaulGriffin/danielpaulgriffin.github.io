@@ -204,12 +204,14 @@
             </div>
             <div class="text-side">
                 <h2>Concept</h2>
-                <p>Uthuru is an indigenous Australian themed survival prototype with a focus on aboriginal culture and technology, as well as the natural processes of the land. 
+                <p>Uthuru is an minimalistic indigenous Australian themed survival prototype with a focus on aboriginal culture and technology, as well as the importance of water and fire. 
                     Any release of this concept will be developed with indigenous artists and writers.
                 </p>
-                <p>Uthuru II is designed to be a learning tool for primary school aged children to teach them about indigenous culture and survival techniques.
+                <p>Uthuru II is designed to be a learning tool for primary school aged children to teach them about indigenous culture and survival techniques, 
+                    as well as Queensland flora and fauna.
                 </p>
-                 <p>The player progresses by obtaining and crafting tools and resources, as well as finding cultural sites that tell a Queenlsand Aboriginal story and unlock 'knowledge' abilities.
+                 <p>The player progresses by obtaining and or crafting tools and resources, as well as finding cultural sites that tell a 
+                    Queensland Aboriginal story. A major goal of the player is to craft a water bottle in order to travel further, though doing so will require a lot of knowledge, preparation and hard work.
                 </p>
            
             </div>
@@ -225,8 +227,11 @@
                 <p>The game is set in a fictional slice of South Queensland, ranging from from the desert to the sea.
                     
                 </p>
-                <p>The generation ship that brought them here has been long forgotten save by a few.</p>
-                <p>Various factions compete and cooperate for resources and technology with ship to ship combat being commonplace.</p>
+                <p>In this large landscape most resources are rare, but locally abundant. This makes transporting and organising resources a priority.</p>
+                <p>Temperature fluctuates between day and night making traveling during the day very difficult due to water loss.</p>
+                <p>Moisture levels vary throughout the land making some areas and resources difficult to obtain. 
+                    The player must constantly manage their hydration levels by visiting water holes.</p>
+                <p>Sites of cultural significance can be found by the player, often near waterholes, that tell stories that not only educate the player in aboriginal culture and customs, but also inform gameplay in world.</p>
                 
            
             </div>
@@ -239,9 +244,13 @@
             </div>
             <div class="text-side">
                 <h2>MECHANICS</h2>
-                <p>The core gameplay revolves around mining asteroids for fuel. 
-                    The player can tether asteroids and tow them into the mouth of the mothership to receive fuel based on their mass.</p>
-                <p>There are enourmous differences in mass between various ships and between asteroids. Ships also have different propulsion, control, fuel and utility technologies making each type unique to fly.</p>
+                <p>All vegetation has a lifecycle. Trees die and turn to bracken. Bracken rots into soil. New saplings sprout in the fertile soil and the process starts again.</p>
+                <p>The player may influence or interupt this cycle by using tools to chop down trees, moving and piling up bracken, as well as by lighting fires.
+
+                <p>Over time, in moist regions, forests will slowly turn to grasslands. The player can start fires that spread through grass and other combustible materials. The ashes left behind are particularly fertile ultimately helping to seed a new forest in time. 
+                    </p>
+                <p>Shelter can be built from bark and used to rest, replenishing stamina. 
+                    The player will be forced to move on regularly (burning as much as they can before they go) as an area has the resources to support them for a short while and will only replenish once the ashes settle and the forest regenerates. </p>
             </div>
         </div>
         
@@ -251,14 +260,14 @@
                 <img src="images/screenshot4.png" alt="Technical Implementation">
             </div>
             <div class="text-side">
-                <h2>TOOLS</h2>
-                <p>Built with Unity's High Definition Render Pipeline for optimal visual fidelity on Quest 3 and PC VR. Custom shaders create the signature minimalist aesthetic while maintaining performance.</p>
-                <ul>
-                    <li>Platforms: Meta Quest, SteamVR</li>
-                    <li>Engine: Unity HDRP</li>
-                    <li>Development: 18 months</li>
-                    <li>Team: Solo developer with audio collaboration</li>
-                </ul>
+                <h2>TECHNOLOGY</h2>
+                <p>Uthuru II has a data-driven, scriptable architecture that allows designers and players to modify and augment the game without having to recompile it.</p>
+                <p>All objects in game, including vegetation, resources, tools and animals are all defined in .json files and their logic defined in LUA scripts. 
+                    This means anyone who can play the game, can also read and edit the games objects and immediately see those changes when starting the game.</p>
+                <p>The goal is to facilitate a way for students to add plants, animals, tools, or any other items into the game as they learn about them in their curriculum.
+                    The API the game provides has been designed to work well as an entry point for learning programming and game design.
+                </p>
+
             </div>
         </div>
         
