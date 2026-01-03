@@ -5,13 +5,15 @@
 }
 
 body {
-    overflow: hidden;
+    /* Remove or comment out overflow: hidden */
+    /* overflow: hidden; */
+    overflow-y: auto; /* Add this to enable vertical scrolling */
     background: #000;
     font-family: 'Orbitron', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100vh; /* This stays to ensure minimum height */
 }
 
 #game-container {

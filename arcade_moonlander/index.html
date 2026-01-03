@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Name — Daniel Paul Griffin</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../portfolio.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Remove all background patterns and make everything solid black */
+        body {
+            background: #000 !important;
+            background-image: none !important;
+        }
+        
+        .project-container {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            padding: 0;
+            background: #000 !important;
+        }
+        
+        .alternating-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 40vh;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,188,255,0.1);
+            background: #000 !important;
+        }
+        
+        .alternating-section:nth-child(even) .art-side {
+            order: 2;
+        }
+        
+        .alternating-section:nth-child(even) .text-side {
+            order: 1;
+        }
+        
+        .art-side {
+            height: 100%;
+            background: #000 !important;
+            background-image: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+        }
+        
+        .art-side img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        
+        .text-side {
+            padding: 4rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #000 !important;
+        }
+        
+        .text-side h2 {
+            color: var(--line-color);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+        
+        .text-side p {
+            color: #e4e4e4;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .text-side ul {
+            list-style: none;
+            margin: 2rem 0;
+        }
+        
+        .text-side li {
+            color: #a0f0e0;
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .text-side li:before {
+            content: "▸";
+            color: var(--line-color);
+            position: absolute;
+            left: 0;
+        }
+        
+        .project-cta {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #000 !important;
+            border-top: 1px solid rgba(0,188,255,0.1);
+        }
+        
+        .back-to-portfolio {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--line-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--line-color);
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+        
+        .back-to-portfolio:hover {
+            background: var(--line-color);
+            color: #0a0e1a;
+        }
+        
+        /* Ensure footer is also black */
+        .portfolio-footer {
+            background: #000 !important;
+        }
+        
+        /* Ensure nav is also black */
+        .portfolio-nav {
+            background: rgba(0, 0, 0, 0.95) !important;
+        }
+        
+        /* Remove any potential gradients or patterns from all elements */
+        * {
+            background-image: none !important;
+        }
+        
+        div, section, main, article {
+            background-color: #000 !important;
+        }
+        
+        @media (max-width: 1024px) {
+            .alternating-section {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            
+            .art-side, .text-side {
+                padding: 2rem;
+                min-height: 50vh;
+            }
+            
+            .alternating-section:nth-child(even) .art-side,
+            .alternating-section:nth-child(even) .text-side {
+                order: initial;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="portfolio-nav">
+        <a href="../index.html" class="nav-logo">
+            <span class="logo-glow">Daniel Paul Griffin</span>
+        </a>
+        <div class="nav-links">
+            <a href="../index.html">Home</a>
+            <a href="../portfolio.html">Portfolio</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="nav-mobile-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+
+    <div class="project-container">
+        <!-- Section 1: Hero Image & Title -->
+        <div class="alternating-section">
+            <div class="art-side">
+                <img src="images/screenshot1.png" alt="Project Hero Visual">
+            </div>
+            <div class="text-side">
+                <h2>Asteroids Unlimited</h2>
+                <p>Over 1 million persistent, minable asteroids. This vectrex inspired space sim is whole new take on the classic Asteroids formula.</p>
+                <p></p>
+               
+            </div>
+        </div>
+        
+        <!-- Section 2: Concept & Vision -->
+        <div class="alternating-section">
+            <div class="art-side">
+                <img src="images/GIF2.gif" alt="Concept Art">
+            </div>
+            <div class="text-side">
+                <h2>The Simulation</h2>
+                <p>The positions and velocities of the asteroids are stored in a 1024x1024 RGBA32 image on the GPU. 
+                    A compute shader updates the positions of all 1m+ asteroids in parrallel every frame. 
+                    This shader also passes a list of asteroids currently near the player to the CPU so they can be spawned.
+                    
+                </p>
+                <p>When an asteroid is spawned, its ID (pixel coordinate in the texure) is used to seed an algorithm that generates it's graphics, name and other properties.
+                    This ensures that no two asteroids are the same, while keeping memory usage low.
+                </p>
+                 <p>When an asteroid leaves the area of play, its velocity and position are updated in the texture, and saved to disk upon exiting.
+                    This results in a persistent world with the players actions having lasting consequences.
+                </p>
+           
+            </div>
+        </div>
+
+          <!-- Section 2: Concept & Vision -->
+        <div class="alternating-section">
+            <div class="art-side">
+                <img src="images/screenshot3.png" alt="Concept Art">
+            </div>
+            <div class="text-side">
+                <h2>The World</h2>
+                <p>In the distant future, a completely isolated, pocket of humanity struggles for existence in an unforgiving region of space.
+                    
+                </p>
+                <p>The generation ship that brought them here has been long forgotten save by a few.</p>
+                <p>Various factions compete and cooperate for resources and technology with ship to ship combat being commonplace.</p>
+                
+           
+            </div>
+        </div>
+        
+        <!-- Section 3: Mechanics -->
+        <div class="alternating-section">
+            <div class="art-side">
+                <img src="images/screenshot2.png" alt="Game Mechanics">
+            </div>
+            <div class="text-side">
+                <h2>MECHANICS</h2>
+                <p>The core gameplay revolves around mining asteroids for fuel. 
+                    The player can tether asteroids and tow them into the mouth of the mothership to receive fuel based on their mass.</p>
+                <p>There are enourmous differences in mass between various ships and between asteroids. Ships also have different propulsion, control, fuel and utility technologies making each type unique to fly.</p>
+            </div>
+        </div>
+        
+        <!-- Section 4: Technical Details -->
+        <div class="alternating-section">
+            <div class="art-side">
+                <img src="technical-demo.jpg" alt="Technical Implementation">
+            </div>
+            <div class="text-side">
+                <h2>TOOLS</h2>
+                <p>Built with Unity's High Definition Render Pipeline for optimal visual fidelity on Quest 3 and PC VR. Custom shaders create the signature minimalist aesthetic while maintaining performance.</p>
+                <ul>
+                    <li>Platforms: Meta Quest, SteamVR</li>
+                    <li>Engine: Unity HDRP</li>
+                    <li>Development: 18 months</li>
+                    <li>Team: Solo developer with audio collaboration</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="project-cta">
+            <p style="color: var(--line-color); font-size: 1.2rem; margin-bottom: 1rem;">AVAILABLE NOW</p>
+            <h2 style="color: #fff; margin-bottom: 2rem;">EXPERIENCE THE DRIFT</h2>
+            <a href="#" class="meta-quest-btn">Wishlist on Steam <i class="fab fa-steam"></i></a>
+            <div style="margin-top: 3rem;">
+                <a href="../portfolio.html" class="back-to-portfolio">
+                    ← Back to Portfolio
+                </a>
+            </div>
+        </div>
+    </div>
+
+   
+
+    <script>
+        document.querySelector('.nav-mobile-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('show');
+        });
+    </script>
+</body>
+</html>
