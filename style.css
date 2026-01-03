@@ -9,7 +9,7 @@ body {
     /* overflow: hidden; */
     overflow-y: auto; /* Add this to enable vertical scrolling */
     background: #000;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Exo 2', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
