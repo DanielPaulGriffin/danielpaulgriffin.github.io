@@ -190,33 +190,13 @@
             </div>
             <div class="text-side">
                 <h2>Asteroids Unlimited</h2>
-                <p>Over 1 million persistent, minable asteroids. This vectrex inspired space sim is whole new take on the classic Asteroids formula.</p>
+                <p>Over 1 million persistent, minable asteroids. This vectrex inspired space sim is a whole new take on the classic Asteroids formula.</p>
                 <p></p>
                
             </div>
         </div>
         
-        <!-- Section 2: Concept & Vision -->
-        <div class="alternating-section">
-            <div class="art-side">
-                <img src="images/GIF2.gif" alt="Concept Art">
-            </div>
-            <div class="text-side">
-                <h2>The Simulation</h2>
-                <p>The positions and velocities of the asteroids are stored in a 1024x1024 RGBA32 image on the GPU. 
-                    A compute shader updates the positions of all 1m+ asteroids in parrallel every frame. 
-                    This shader also passes a list of asteroids currently near the player to the CPU so they can be spawned.
-                    
-                </p>
-                <p>When an asteroid is spawned, its ID (pixel coordinate in the texure) is used to seed an algorithm that generates it's graphics, name and other properties.
-                    This ensures that no two asteroids are the same, while keeping memory usage low.
-                </p>
-                 <p>When an asteroid leaves the area of play, its velocity and position are updated in the texture, and saved to disk upon exiting.
-                    This results in a persistent world with the players actions having lasting consequences.
-                </p>
-           
-            </div>
-        </div>
+       
 
           <!-- Section 2: Concept & Vision -->
         <div class="alternating-section">
@@ -225,7 +205,7 @@
             </div>
             <div class="text-side">
                 <h2>The World</h2>
-                <p>In the distant future, a completely isolated, pocket of humanity struggles for existence in an unforgiving region of space.
+                <p>In the distant future, a completely isolated pocket of humanity struggles for existence in an unforgiving region of space.
                     
                 </p>
                 <p>The generation ship that brought them here has been long forgotten save by a few.</p>
@@ -247,35 +227,40 @@
                 <p>There are enourmous differences in mass between various ships and between asteroids. Ships also have different propulsion, control, fuel and utility technologies making each type unique to fly.</p>
             </div>
         </div>
-        
+         <!-- Section 2: Concept & Vision -->
+        <div class="alternating-section">
+            <div class="art-side">
+                <img src="images/GIF2.gif" alt="Concept Art">
+            </div>
+            <div class="text-side">
+                <h2>The Simulation</h2>
+                <p>The positions and velocities of the asteroids are stored in a 1024x1024 RGBA32 image on the GPU. 
+                    A compute shader updates the positions of all 1m+ asteroids in parrallel every frame. 
+                    This shader also passes a list of asteroids currently near the player to the CPU so they can be spawned.
+                    
+                </p>
+                <p>When an asteroid is spawned, its ID (pixel coordinate in the texure) is used to seed an algorithm that generates its graphics, name and other properties.
+                    This ensures that no two asteroids are the same, while keeping memory usage low.
+                </p>
+                 <p>When an asteroid leaves the area of play, its velocity and position are updated in the texture, and saved to disk upon exiting.
+                    This results in a persistent world with the players actions having lasting consequences.
+                </p>
+           
+            </div>
+        </div>
         <!-- Section 4: Technical Details -->
         <div class="alternating-section">
             <div class="art-side">
-                <img src="technical-demo.jpg" alt="Technical Implementation">
+                <img src="images/screenshoteditor.png" alt="Technical Implementation">
             </div>
             <div class="text-side">
                 <h2>TOOLS</h2>
-                <p>Built with Unity's High Definition Render Pipeline for optimal visual fidelity on Quest 3 and PC VR. Custom shaders create the signature minimalist aesthetic while maintaining performance.</p>
-                <ul>
-                    <li>Platforms: Meta Quest, SteamVR</li>
-                    <li>Engine: Unity HDRP</li>
-                    <li>Development: 18 months</li>
-                    <li>Team: Solo developer with audio collaboration</li>
-                </ul>
+                <p>The custom Vectrex style graphics are authored using a custom point data editor also built in Godot 4.</p>
+               
             </div>
         </div>
         
-        <!-- CTA Section -->
-        <div class="project-cta">
-            <p style="color: var(--line-color); font-size: 1.2rem; margin-bottom: 1rem;">AVAILABLE NOW</p>
-            <h2 style="color: #fff; margin-bottom: 2rem;">EXPERIENCE THE DRIFT</h2>
-            <a href="#" class="meta-quest-btn">Wishlist on Steam <i class="fab fa-steam"></i></a>
-            <div style="margin-top: 3rem;">
-                <a href="../portfolio.html" class="back-to-portfolio">
-                    ← Back to Portfolio
-                </a>
-            </div>
-        </div>
+        
     </div>
 
    
