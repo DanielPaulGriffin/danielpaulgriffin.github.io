@@ -8,7 +8,7 @@ body {
     /* Remove or comment out overflow: hidden */
     /* overflow: hidden; */
     overflow-y: auto; /* Add this to enable vertical scrolling */
-    background: #ac1f1f;
+    background: #000;
     font-family: 'Exo 2', sans-serif;
     display: flex;
     justify-content: center;
@@ -44,7 +44,7 @@ body {
     align-items: center;
     gap: 20px;
     padding: 10px 20px;
-    background: rgba(160, 30, 30, 0.5);
+    background: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     border: 1px solid var(--line-color);
 }
