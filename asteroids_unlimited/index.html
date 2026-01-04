@@ -173,8 +173,7 @@
         <div class="nav-links">
             <a href="../index.html">Home</a>
             <a href="../portfolio.html">Portfolio</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+          
         </div>
         <div class="nav-mobile-toggle">
             <div class="bar"></div>
@@ -235,17 +234,16 @@
             </div>
             <div class="text-side">
                 <h2>The Simulation</h2>
-                <p>The positions and velocities of the asteroids are stored in a 1024x1024 RGBA32 image on the GPU. 
-                    A compute shader updates the positions of all 1m+ asteroids in parrallel every frame. 
-                    This shader also passes a list of asteroids currently near the player to the CPU so they can be spawned.
+                <p>The positions and velocities of the asteroids are calculated in parrallel on the GPU. 
+                    This allows for 1m+ asteroids to persist in world without the CPU having to break a sweat.
                     
                 </p>
-                <p>When an asteroid is spawned, its ID (pixel coordinate in the texure) is used to seed an algorithm that generates its graphics, name and other properties.
+                <p>When an asteroid is spawned, its ID is used to seed an algorithm that generates its graphics, name and other properties.
                     This ensures that no two asteroids are the same, while keeping memory usage low.
                 </p>
                  <p>When an asteroid leaves the area of play, its velocity and position are updated in the texture, and saved to disk upon exiting.
-                    This results in a persistent world with the players actions having lasting consequences.
-                </p>
+                    This results in a deep and persistent world with the players actions having lasting consequences. 
+                    <p>The depth and scale of this ambient mechanic helps facilitate suspension of disbelief in the player.</p>
            
             </div>
         </div>
@@ -256,7 +254,7 @@
             </div>
             <div class="text-side">
                 <h2>TOOLS</h2>
-                <p>The custom Vectrex style graphics are authored using a custom point data editor also built in Godot 4.</p>
+                <p>The Vectrex style graphics are authored using a custom point data editor also built in Godot 4.</p>
                
             </div>
         </div>
