@@ -15,7 +15,7 @@
     <priority>1.0</priority>
   </url>
   
-  <!-- Common pages (adjust based on your actual content) -->
+ 
   <url>
     <loc>https://danielpaulgriffin.github.io/thrustfall</loc>
     <lastmod>2025-06-30</lastmod>
@@ -23,7 +23,7 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- Thrustfall Presskit -->
+ 
   <url>
     <loc>https://danielpaulgriffin.github.io/thrustfall/presskit</loc>
     <lastmod>2025-06-30</lastmod>
